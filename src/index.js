@@ -1,22 +1,14 @@
 window.onload = function () {
     drawGameBoard(3); //6 max
     let ticTacToeGame = new TicTacToeGame();
-    ticTacToeGame.ticTacToeCells = ticTacToeGame.ticTacToeCells
-        .map(e => {
-            let eCopy = e;
-            eCopy.addEventListener('click', function () {
-                ticTacToeGame.makeMove(this.id);
-            }, {
-                once: true
-            });
-            return eCopy;
-        });
+    ticTacToeGame.addCellEvents();
 };
 
 function drawGameBoard(size) {
     let containerElement = document.getElementById('tic-tac-toe-container');
-    containerElement.style.gridTemplateColumns = `repeat(${size},1fr)`;
-    containerElement.style.gridTemplateRows = `repeat(${size},1fr)`;
+    containerElement.style.width = (20 * size) + (1.8 * (size - 1)) + 'vh';
+    containerElement.style.gridTemplateColumns = `repeat(${size},20vh)`;
+    containerElement.style.gridTemplateRows = `repeat(${size},20vh)`;
     for (let i = 0; i < size * size; i++) {
         containerElement.innerHTML += '<div id="tic-tac-toe-cell' + i + '" class="tic-tac-toe-cell"></div>';
 
@@ -26,8 +18,7 @@ function drawGameBoard(size) {
 class TicTacToeGame {
     constructor() {
         this.isXTurn = true;
-        this.ticTacToeCells = Array.prototype.slice
-            .call(document.getElementsByClassName('tic-tac-toe-cell'));
+        this.ticTacToeCells = [...document.getElementsByClassName('tic-tac-toe-cell')];
     }
     makeMove(id) {
         if (this.isXTurn) {
@@ -38,20 +29,58 @@ class TicTacToeGame {
         this.isXTurn ^= true;
         this.hasSomebodyWon();
     }
+    addCellEvents() {
+        let self = this;
+        this.ticTacToeCells = this.ticTacToeCells
+            .map(e => {
+                let eCopy = e;
+                eCopy.addEventListener('click', function() {
+                    //this is html element
+                    self.makeMove(this.id);
+                }, {
+                    once: true
+                });
+                return eCopy;
+            });
+    }
+    //TODO: lots of refactoring
     hasSomebodyWon() {
         //rows
         let victoriuosRow = this.getVictoriuosRow();
         if (victoriuosRow) {
+            if (victoriuosRow[0].innerHTML[24] == 'x') {
+                victoriuosRow[0].classList.add('horizontal-black-line');
+            } else {
+                victoriuosRow[0].classList.add('horizontal-white-line');
+            }
             console.info(victoriuosRow[0].innerHTML[24] + ' wins!');
         }
         //columns
         let victoriuosColumn = this.getVictoriuosColumn();
         if (victoriuosColumn) {
+            if (victoriuosColumn[0].innerHTML[24] == 'x') {
+                victoriuosColumn[0].classList.add('vertical-black-line');
+            } else {
+                victoriuosColumn[0].classList.add('vertical-white-line');
+            }
             console.info(victoriuosColumn[0].innerHTML[24] + ' wins!');
         }
         //diagonals
         let victoriuosDiagonalRow = this.getVictoriuosDiagonalRow();
         if (victoriuosDiagonalRow) {
+            if (victoriuosDiagonalRow[0].id[16] == '0') {
+                if (victoriuosDiagonalRow[0].innerHTML[24] == 'x') {
+                    victoriuosDiagonalRow[0].classList.add('diagonal-backward-black-line');
+                } else {
+                    victoriuosDiagonalRow[0].classList.add('diagonal-backward-white-line');
+                }
+            } else {
+                if (victoriuosDiagonalRow[victoriuosDiagonalRow.length - 1].innerHTML[24] == 'x') {
+                    victoriuosDiagonalRow[victoriuosDiagonalRow.length - 1].classList.add('diagonal-forward-black-line');
+                } else {
+                    victoriuosDiagonalRow[victoriuosDiagonalRow.length - 1].classList.add('diagonal-forward-white-line');
+                }
+            }
             console.info(victoriuosDiagonalRow[0].innerHTML[24] + ' wins!');
         }
         return false;

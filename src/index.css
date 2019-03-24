@@ -13,12 +13,11 @@ body {
     background-color: #0DA192;
     display: grid;
     grid-gap: 1.8vh;
-    width: 60vh;
-    height: 60vh;
     margin: 10vh auto auto auto;
 }
 
 .tic-tac-toe-cell {
+    position: relative;
     background-color: #14BDAC;
     display: inline-grid;
     justify-items: center;
@@ -34,33 +33,291 @@ body {
 }
 
 .tic-tac-toe-x {
+    z-index: 1;
     position: relative;
     width: 100%;
-    height: 1.8vh;
+    height: 100%;
 }
 
 .tic-tac-toe-x::before {
     position: absolute;
-    width: 100%;
+    top: 1.3vh;
+    left: 2.8vh;
     height: 1.8vh;
     content: "";
     background-color: #545454;
     vertical-align: baseline;
     transform: rotate(45deg);
+    transform-origin: top left;
+    animation: x-line-animation 0.1s ease-in;
+    animation-fill-mode: forwards;
 }
 
 .tic-tac-toe-x::after {
     position: absolute;
-    width: 100%;
+    top: 1.3vh;
+    right: 2.8vh;
     height: 1.8vh;
     content: "";
     background-color: #545454;
-    transform: rotate(135deg);
+    transform: rotate(-45deg);
+    transform-origin: top right;
+    animation: x-line-animation 0.1s ease-in;
+    animation-fill-mode: forwards;
+}
+
+@keyframes x-line-animation {
+    from {
+        width: 0%;
+    }
+
+    to {
+        width: 100%;
+    }
 }
 
 .tic-tac-toe-o {
+    position: relative;
+    z-index: 1;
     width: 80%;
     height: 80%;
-    border: 1.8vh solid #F2EBD3;
+    border: 1.8vh solid;
     border-radius: 50%;
+    transform: rotate(-45deg);
+    animation: o-line-animation 0.3s ease-in;
+    animation-fill-mode: forwards;
+}
+
+@keyframes o-line-animation {
+    0% {
+        border-color: transparent;
+    }
+
+    25% {
+        border-color: #F2EBD3 transparent transparent transparent;
+    }
+
+    50% {
+        border-color: #F2EBD3 transparent transparent #F2EBD3;
+    }
+
+    75% {
+        border-color: #F2EBD3 transparent #F2EBD3 #F2EBD3;
+    }
+
+    100% {
+        border-color: #F2EBD3;
+    }
+}
+
+.vertical-black-line::after {
+    z-index: 1;
+    position: absolute;
+    top: 0px;
+    content: "";
+    width: 1.8vh;
+    background-color: #545454;
+    transform-origin: top;
+    animation: vertical-line-animation 0.1s ease-in;
+    animation-fill-mode: forwards;
+}
+
+.vertical-white-line::after {
+    z-index: 1;
+    position: absolute;
+    top: 0px;
+    content: "";
+    width: 1.8vh;
+    background-color: #F2EBD3;
+    transform-origin: top;
+    animation: vertical-line-animation 0.1s ease-in;
+    animation-fill-mode: forwards;
+}
+
+@keyframes vertical-line-animation {
+    from {
+        height: 0%;
+    }
+
+    to {
+        height: 320%;
+    }
+}
+
+.horizontal-black-line::after {
+    z-index: 1;
+    position: absolute;
+    left: 0px;
+    content: "";
+    height: 1.8vh;
+    background-color: #545454;
+    transform-origin: left;
+    animation: horizontal-line-animation 0.1s ease-in;
+    animation-fill-mode: forwards;
+}
+
+.horizontal-white-line::after {
+    z-index: 1;
+    position: absolute;
+    left: 0px;
+    content: "";
+    height: 1.8vh;
+    background-color: #F2EBD3;
+    transform-origin: left;
+    animation: horizontal-line-animation 0.1s ease-in;
+    animation-fill-mode: forwards;
+}
+
+@keyframes horizontal-line-animation {
+    from {
+        width: 0%;
+    }
+
+    to {
+        width: 320%;
+    }
+}
+
+.diagonal-backward-black-line::after {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 1.5vh;
+    content: "";
+    height: 1.8vh;
+    background-color: #545454;
+    transform: rotate(45deg);
+    transform-origin: top left;
+    animation: diagonal-line-animation 0.1s ease-in;
+    animation-fill-mode: forwards;
+}
+
+.diagonal-backward-white-line::after {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 1.5vh;
+    content: "";
+    height: 1.8vh;
+    background-color: #F2EBD3;
+    transform: rotate(45deg);
+    transform-origin: top left;
+    animation: diagonal-line-animation 0.1s ease-in;
+    animation-fill-mode: forwards;
+}
+
+.diagonal-forward-black-line::after {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    right: 1.5vh;
+    content: "";
+    height: 1.8vh;
+    background-color: #545454;
+    transform: rotate(-45deg);
+    transform-origin: top right;
+    animation: diagonal-line-animation 0.1s ease-in;
+    animation-fill-mode: forwards;
+}
+
+.diagonal-forward-white-line::after {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    right: 1.5vh;
+    content: "";
+    height: 1.8vh;
+    background-color: #F2EBD3;
+    transform: rotate(-45deg);
+    transform-origin: top right;
+    animation: diagonal-line-animation 0.1s ease-in;
+    animation-fill-mode: forwards;
+}
+
+@keyframes diagonal-line-animation {
+    from {
+        width: 0%;
+    }
+
+    to {
+        width: 440%;
+    }
+}
+.goes-right {
+    animation: go-right 0.1s ease-in;
+    animation-fill-mode: forwards;
+}
+.goes-right-down {
+    animation: go-right 0.1s ease-in,go-down 0.1s ease-in;
+    animation-fill-mode: forwards;
+}
+.goes-right-up {
+    animation: go-right 0.1s ease-in,go-up 0.1s ease-in;
+    animation-fill-mode: forwards;
+}
+.goes-left {
+    animation: go-left 0.1s ease-in;
+    animation-fill-mode: forwards;
+}
+.goes-left-down {
+    animation: go-left 0.1s ease-in,go-down 0.1s ease-in;
+    animation-fill-mode: forwards;
+}
+.goes-left-up {
+    animation: go-left 0.1s ease-in,go-up 0.1s ease-in;
+    animation-fill-mode: forwards;
+}
+.goes-up {
+    animation: go-up 0.1s ease-in;
+    animation-fill-mode: forwards;
+}
+.goes-down {
+    animation: go-down 0.1s ease-in;
+    animation-fill-mode: forwards;
+}
+.circle-colored {
+    border-color: #F2EBD3;
+}
+
+@keyframes go-right {
+    from {
+        left: 0vh
+    }
+
+    to {
+        left: 21.8vh
+    }
+}
+
+
+
+@keyframes go-left {
+    from {
+        right: 0vh
+    }
+
+    to {
+        right: 21.8vh
+    }
+}
+
+@keyframes go-down {
+    from {
+        top: 0vh
+    }
+
+    to {
+        top: 21.8vh
+    }
+}
+
+
+@keyframes go-up {
+    from {
+        bottom: 0vh
+    }
+
+    to {
+        bottom: 21.8vh
+    }
 }
