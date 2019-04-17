@@ -1,135 +1,234 @@
-window.onload = function () {
-    drawGameBoard(3); //6 max
-    let ticTacToeGame = new TicTacToeGame();
-    ticTacToeGame.addCellEvents();
+import {
+    $,
+    constructNode,
+    sleep
+} from './helpers.js';
+
+let ticTacToeStore = {
+    cells: [],
+    isXTurn: true,
+    turnCounter: 0,
+    gameRunning: true
 };
 
-function drawGameBoard(size) {
-    let containerElement = document.getElementById('tic-tac-toe-container');
-    containerElement.style.width = (20 * size) + (1.8 * (size - 1)) + 'vh';
-    containerElement.style.gridTemplateColumns = `repeat(${size},20vh)`;
-    containerElement.style.gridTemplateRows = `repeat(${size},20vh)`;
-    for (let i = 0; i < size * size; i++) {
-        containerElement.innerHTML += '<div id="tic-tac-toe-cell' + i + '" class="tic-tac-toe-cell"></div>';
+(function onInit() {
+    drawGameBoard();
+    addBoardEvents();
+})();
 
+function drawGameBoard() {
+    let ticTacToeElement = constructNode('tic-tac-toe');
+    ticTacToeElement = addCells(ticTacToeElement);
+    // containerElement.appendChild(constructNode('tic-tac-toe-cell', '', 'tic-tac-toe-cell-' + i));
+    // <div id="big-guy-container"></div>
+    $('#tic-tac-toe-container').appendChild(ticTacToeElement);
+}
+
+async function onClick() {
+    if (ticTacToeStore.gameRunning) {
+        await makeMove(this.id[17]);
+        let victory = getVictory();
+        if (victory) {
+            await onVictory(victory);
+        }
     }
 }
 
-class TicTacToeGame {
-    constructor() {
-        this.isXTurn = true;
-        this.ticTacToeCells = [...document.getElementsByClassName('tic-tac-toe-cell')];
+async function onVictory(victory) {
+    ticTacToeStore.gameRunning = false;
+    await runVictoryAnimation(victory);
+    await sleep(200);
+    $('#tic-tac-toe-container').removeChild($('#tic-tac-toe'));
+    let victoryContainer = constructNode('div', undefined, 'victory-container');
+    let bigOXContainer = constructNode('div', undefined, 'big-ox-container');
+    bigOXContainer.appendChild(constructNode('div', 'tic-tac-toe-' + victory.player, 'tic-tac-toe-big-' + victory.player));
+    victoryContainer.appendChild(bigOXContainer);
+    let winnerText = constructNode('div', undefined, 'winner-text');
+    victoryContainer.appendChild(winnerText);
+    $('#tic-tac-toe-container').appendChild(victoryContainer);
+    console.info(victory.player, ' wins!');
+}
+
+function addBoardEvents() {
+    ticTacToeStore.cells = [...$('tic-tac-toe-cell')];
+    ticTacToeStore.cells.forEach(e => {
+        e.addEventListener('click', onClick, {
+            once: true
+        });
+        return e;
+    });
+}
+async function runVictoryAnimation(victory) {
+    let color;
+    if (victory.player == 'x') {
+        color = 'black';
+    } else {
+        color = 'white';
     }
-    makeMove(id) {
-        if (this.isXTurn) {
-            document.getElementById(id).innerHTML = '<div class="tic-tac-toe-x"></div>';
-        } else {
-            document.getElementById(id).innerHTML = '<div class="tic-tac-toe-o"></div>';
-        }
-        this.isXTurn ^= true;
-        this.hasSomebodyWon();
+    let lineType;
+    if (victory.type == 'row') {
+        lineType = 'horizontal';
+    } else if (victory.type == 'column') {
+        lineType = 'vertical';
+    } else if (victory.type == 'diagonalBackwardRow') {
+        lineType = 'diagonal-backward';
+    } else if (victory.type == 'diagonalForwardRow') {
+        lineType = 'diagonal-forward';
     }
-    addCellEvents() {
-        let self = this;
-        this.ticTacToeCells = this.ticTacToeCells
-            .map(e => {
-                let eCopy = e;
-                eCopy.addEventListener('click', function() {
-                    //this is html element
-                    self.makeMove(this.id);
-                }, {
-                    once: true
-                });
-                return eCopy;
-            });
+    victory.elements[0].classList.add(`${lineType}-${color}-line`);
+    await sleep(110);
+}
+
+
+
+function addCells(containerElement) {
+    let size = 9;
+    for (let i = 0; i < size; i++) {
+        containerElement.appendChild(constructNode('tic-tac-toe-cell', '', 'tic-tac-toe-cell-' + i));
     }
-    //TODO: lots of refactoring
-    hasSomebodyWon() {
-        //rows
-        let victoriuosRow = this.getVictoriuosRow();
-        if (victoriuosRow) {
-            if (victoriuosRow[0].innerHTML[24] == 'x') {
-                victoriuosRow[0].classList.add('horizontal-black-line');
-            } else {
-                victoriuosRow[0].classList.add('horizontal-white-line');
-            }
-            console.info(victoriuosRow[0].innerHTML[24] + ' wins!');
+    return containerElement;
+}
+
+async function makeMove(index) {
+    let moveMaker = '';
+    if (ticTacToeStore.isXTurn) {
+        moveMaker = 'x';
+        ticTacToeStore.isXTurn = false;
+    } else {
+        moveMaker = 'o';
+        ticTacToeStore.isXTurn = true;
+    }
+    // ticTacToeStore.cells[index] = moveMaker;
+    let element = constructNode('div', 'tic-tac-toe-' + moveMaker, 'tic-tac-toe-move-' + ticTacToeStore.turnCounter);
+    $('#tic-tac-toe-cell-' + index).appendChild(element);
+    ticTacToeStore.turnCounter++;
+    await sleep(110);
+}
+
+function getVictory() {
+    let rowVictory = getRowVictory();
+    if (rowVictory) {
+        return rowVictory
+    }
+    let columnVictory = getColumnVictory();
+    if (columnVictory) {
+        return columnVictory;
+    }
+    let diagonalRowVictory = getDiagonalRowVictory();
+    if (diagonalRowVictory) {
+        return diagonalRowVictory;
+    }
+    return undefined;
+}
+
+function getDiagonalRowVictory() {
+    let row = [
+        ticTacToeStore.cells[0],
+        ticTacToeStore.cells[4],
+        ticTacToeStore.cells[8]
+    ];
+    if (isVictoriuosFew('x', row)) {
+        return {
+            player: 'x',
+            elements: row,
+            type: 'diagonalBackwardRow'
+        };
+    }
+    if (isVictoriuosFew('o', row)) {
+        return {
+            player: 'o',
+            elements: row,
+            type: 'diagonalBackwardRow'
+        };
+    }
+    row = [
+        ticTacToeStore.cells[2],
+        ticTacToeStore.cells[4],
+        ticTacToeStore.cells[6]
+    ]
+    if (isVictoriuosFew('x', row)) {
+        return {
+            player: 'x',
+            elements: row,
+            type: 'diagonalForwardRow'
+        };
+    }
+    if (isVictoriuosFew('o', row)) {
+        return {
+            player: 'o',
+            elements: row,
+            type: 'diagonalForwardRow'
+        };
+    }
+    return undefined;
+}
+
+function getColumnVictory() {
+    let column = [];
+    for (let i = 0; i < 3; i++) {
+        column = [
+            ticTacToeStore.cells[i],
+            ticTacToeStore.cells[i + 3],
+            ticTacToeStore.cells[i + 6]
+        ];
+        if (isVictoriuosFew('x', column)) {
+            return {
+                player: 'x',
+                elements: column,
+                type: 'column'
+            };
         }
-        //columns
-        let victoriuosColumn = this.getVictoriuosColumn();
-        if (victoriuosColumn) {
-            if (victoriuosColumn[0].innerHTML[24] == 'x') {
-                victoriuosColumn[0].classList.add('vertical-black-line');
-            } else {
-                victoriuosColumn[0].classList.add('vertical-white-line');
-            }
-            console.info(victoriuosColumn[0].innerHTML[24] + ' wins!');
+        if (isVictoriuosFew('o', column)) {
+            return {
+                player: 'o',
+                elements: column,
+                type: 'column'
+            };
         }
-        //diagonals
-        let victoriuosDiagonalRow = this.getVictoriuosDiagonalRow();
-        if (victoriuosDiagonalRow) {
-            if (victoriuosDiagonalRow[0].id[16] == '0') {
-                if (victoriuosDiagonalRow[0].innerHTML[24] == 'x') {
-                    victoriuosDiagonalRow[0].classList.add('diagonal-backward-black-line');
-                } else {
-                    victoriuosDiagonalRow[0].classList.add('diagonal-backward-white-line');
-                }
-            } else {
-                if (victoriuosDiagonalRow[victoriuosDiagonalRow.length - 1].innerHTML[24] == 'x') {
-                    victoriuosDiagonalRow[victoriuosDiagonalRow.length - 1].classList.add('diagonal-forward-black-line');
-                } else {
-                    victoriuosDiagonalRow[victoriuosDiagonalRow.length - 1].classList.add('diagonal-forward-white-line');
-                }
-            }
-            console.info(victoriuosDiagonalRow[0].innerHTML[24] + ' wins!');
+    }
+    return undefined;
+}
+
+function getRowVictory() {
+    let row = [];
+    for (let i = 0; i < 9; i += 3) {
+        row = [
+            ticTacToeStore.cells[i],
+            ticTacToeStore.cells[i + 1],
+            ticTacToeStore.cells[i + 2]
+        ];
+        if (isVictoriuosFew('x', row)) {
+            return {
+                player: 'x',
+                elements: row,
+                type: 'row'
+            };
         }
+        if (isVictoriuosFew('o', row)) {
+            return {
+                player: 'o',
+                elements: row,
+                type: 'row'
+            };
+        }
+    }
+    return undefined;
+}
+
+function isVictoriuosFew(player, elements) {
+    let nulls = elements.filter(e => e.firstChild == null);
+    if (nulls.length != 0) {
         return false;
     }
-    getVictoriuosDiagonalRow() {
-        let ticTacToeSize = Math.sqrt(this.ticTacToeCells.length);
-        let diagnalRows = [];
-        let row = [];
-        for (let i = 0, j = 0; i < this.ticTacToeCells.length; i += ticTacToeSize, j++) {
-            row.push(this.ticTacToeCells[i + j]);
-        }
-        diagnalRows.push(row);
-        row = [];
-        for (let i = this.ticTacToeCells.length, j = ticTacToeSize; i > 0; i -= ticTacToeSize, j--) {
-            row.push(this.ticTacToeCells[i - j]);
-        }
-        diagnalRows.push(row);
-        let diagnalRowVictories = diagnalRows.map(arr => arr.every(e => e.innerHTML != '' && e.innerHTML == arr[0].innerHTML));
-        if (diagnalRowVictories.includes(true)) {
-            return diagnalRows[diagnalRowVictories.indexOf(true)];
-        }
-        return undefined;
+    let classes = elements.map(e => {
+        return e.firstChild.className;
+    });
+    if (!classes[0].includes(`tic-tac-toe-${player}`)) {
+        return false;
     }
-    getVictoriuosColumn() {
-        let ticTacToeSize = Math.sqrt(this.ticTacToeCells.length);
-        let columns = [];
-        for (let i = 0; i < ticTacToeSize; i++) {
-            let column = [];
-            for (let j = 0; j < this.ticTacToeCells.length; j += ticTacToeSize) {
-                column.push(this.ticTacToeCells[i + j]);
-            }
-            columns.push(column);
-        }
-        let columnVictories = columns.map(arr => arr.every(e => e.innerHTML != '' && e.innerHTML == arr[0].innerHTML));
-        if (columnVictories.includes(true)) {
-            return columns[columnVictories.indexOf(true)];
-        }
-        return undefined;
+    let notEquallClasses = classes.filter(e => e != classes[0]);
+    if (notEquallClasses.length != 0) {
+        return false;
     }
-    getVictoriuosRow() {
-        let ticTacToeSize = Math.sqrt(this.ticTacToeCells.length);
-        let rows = [];
-        for (let i = 0; i < this.ticTacToeCells.length; i += ticTacToeSize) {
-            rows.push(this.ticTacToeCells.slice(i, i + ticTacToeSize));
-        }
-        let rowVictories = rows.map(arr => arr.every(e => e.innerHTML != '' && e.innerHTML == arr[0].innerHTML));
-        if (rowVictories.includes(true)) {
-            return rows[rowVictories.indexOf(true)];
-        }
-        return undefined;
-    }
+    return true;
 }
