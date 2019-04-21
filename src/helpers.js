@@ -5,10 +5,10 @@ function $(selector) {
 
 function constructNode(tag, className, id = tag) {
     let ticTacToeElement = document.createElement(tag);
+    ticTacToeElement.id = id;
     if (className) {
         ticTacToeElement.className += className;
     }
-    ticTacToeElement.id = id;
     return ticTacToeElement;
 }
 

@@ -17,11 +17,9 @@ let ticTacToeStore = {
 })();
 
 function drawGameBoard() {
-    let ticTacToeElement = constructNode('tic-tac-toe');
+    let ticTacToeElement = constructNode('div', undefined, 'tic-tac-toe-cells-container');
     ticTacToeElement = addCells(ticTacToeElement);
-    // containerElement.appendChild(constructNode('tic-tac-toe-cell', '', 'tic-tac-toe-cell-' + i));
-    // <div id="big-guy-container"></div>
-    $('#tic-tac-toe-container').appendChild(ticTacToeElement);
+    $('#tic-tac-toe-board').appendChild(ticTacToeElement);
 }
 
 async function onClick() {
@@ -38,19 +36,23 @@ async function onVictory(victory) {
     ticTacToeStore.gameRunning = false;
     await runVictoryAnimation(victory);
     await sleep(200);
-    $('#tic-tac-toe-container').removeChild($('#tic-tac-toe'));
+    $('#tic-tac-toe-board').removeChild($('#tic-tac-toe-cells-container'));
     let victoryContainer = constructNode('div', undefined, 'victory-container');
     let bigOXContainer = constructNode('div', undefined, 'big-ox-container');
-    bigOXContainer.appendChild(constructNode('div', 'tic-tac-toe-' + victory.player, 'tic-tac-toe-big-' + victory.player));
+    if (victory.player == 'o') {
+        bigOXContainer.appendChild(constructNode('div', 'tic-tac-toe-o border-thiccc-solid', 'tic-tac-toe-big-o'));
+    } else {
+        bigOXContainer.appendChild(constructNode('div', 'tic-tac-toe-x', 'tic-tac-toe-big-x'));
+    }
     victoryContainer.appendChild(bigOXContainer);
     let winnerText = constructNode('div', undefined, 'winner-text');
+    winnerText.innerText = 'LAIMETOJAS!';
     victoryContainer.appendChild(winnerText);
-    $('#tic-tac-toe-container').appendChild(victoryContainer);
-    console.info(victory.player, ' wins!');
+    $('#tic-tac-toe-board').appendChild(victoryContainer);
 }
 
 function addBoardEvents() {
-    ticTacToeStore.cells = [...$('tic-tac-toe-cell')];
+    ticTacToeStore.cells = [...$('.tic-tac-toe-cell')];
     ticTacToeStore.cells.forEach(e => {
         e.addEventListener('click', onClick, {
             once: true
@@ -58,6 +60,7 @@ function addBoardEvents() {
         return e;
     });
 }
+
 async function runVictoryAnimation(victory) {
     let color;
     if (victory.player == 'x') {
@@ -84,7 +87,7 @@ async function runVictoryAnimation(victory) {
 function addCells(containerElement) {
     let size = 9;
     for (let i = 0; i < size; i++) {
-        containerElement.appendChild(constructNode('tic-tac-toe-cell', '', 'tic-tac-toe-cell-' + i));
+        containerElement.appendChild(constructNode('div', 'tic-tac-toe-cell', 'tic-tac-toe-cell-' + i));
     }
     return containerElement;
 }
@@ -100,7 +103,8 @@ async function makeMove(index) {
     }
     // ticTacToeStore.cells[index] = moveMaker;
     let element = constructNode('div', 'tic-tac-toe-' + moveMaker, 'tic-tac-toe-move-' + ticTacToeStore.turnCounter);
-    $('#tic-tac-toe-cell-' + index).appendChild(element);
+    let cell = await $('#tic-tac-toe-cell-' + index);
+    cell.appendChild(element);
     ticTacToeStore.turnCounter++;
     await sleep(110);
 }

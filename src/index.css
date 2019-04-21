@@ -1,58 +1,67 @@
 :root {
     --light-green: hsl(174, 81%, 61%);
     --dark-green: #0DA192;
+    --main-green: #14BDAC;
+    --x-color: #545454;
+    --o-color: #F2EBD3;
+    --gui-main-color: white;
 }
 
 * {
     margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    /*normalize*/
 }
 
 body {
+    height: 100vh;
     text-align: center;
-    background-color: var(--light-green);
+    font-family: 'Anton', sans-serif;
 }
 
-#footer {
-    position: absolute;
-    bottom: 0px;
-    color: #2e2620
+#tic-tac-toe {
+    display: grid;
+    justify-items: center;
+    grid-template-rows: 20.2vh 69.6vh auto;
+    height: 100vh;
+    background-color: var(--gui-main-color);
 }
 
-tic-tac-toe {
+#tic-tac-toe-top {
+    width: 100%;
+    height: 100%;
+}
+
+#tic-tac-toe-bottom {
+    width: 100%;
+    height: 100%;
+}
+
+#tic-tac-toe-board {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    background-color: var(--main-green);
+}
+
+#tic-tac-toe-cells-container {
     background-color: var(--dark-green);
-    width: 63.6vh;
+    width: 63.5vh;
+    height: 63.5vh;
     display: grid;
     grid-template-columns: repeat(3, 20vh);
     grid-template-rows: repeat(3, 20vh);
     grid-gap: 1.8vh;
-    margin: 10vh auto auto auto;
 }
 
-#tic-tac-toe-container {
+.tic-tac-toe-cell {
     position: relative;
-    display: inline-block;
-    width: 63.6vh;
-    height: 63.6vh;
-    background-color: #476b4b77;
-}
-
-tic-tac-toe-cell {
-    position: relative;
-    background-color: var(--light-green);
+    background-color: var(--main-green);
     display: inline-grid;
     justify-items: center;
     align-items: center;
     padding: 2vh;
-}
-
-/* TODO: LE REFATORE */
-.board-boxes {
-    background: var(--light-green);
-    display: inline-grid;
-    justify-items: center;
-    align-items: center;
 }
 
 .tic-tac-toe-x {
@@ -68,7 +77,7 @@ tic-tac-toe-cell {
     left: 8%;
     height: 16%;
     content: "";
-    background-color: #635c5c;
+    background-color: var(--x-color);
     vertical-align: baseline;
     transform: rotate(45deg);
     transform-origin: top left;
@@ -82,7 +91,7 @@ tic-tac-toe-cell {
     right: 8%;
     height: 16%;
     content: "";
-    background-color: #635c5c;
+    background-color: var(--x-color);
     transform: rotate(-45deg);
     transform-origin: top right;
     animation: x-line-animation 0.1s ease-in;
@@ -102,8 +111,8 @@ tic-tac-toe-cell {
 .tic-tac-toe-o {
     position: relative;
     z-index: 1;
-    width: 80%;
-    height: 80%;
+    width: 60%;
+    height: 60%;
     border: 1.8vh solid;
     border-radius: 50%;
     transform: rotate(-45deg);
@@ -117,19 +126,19 @@ tic-tac-toe-cell {
     }
 
     25% {
-        border-color: #F2EBD3 transparent transparent transparent;
+        border-color: var(--o-color) transparent transparent transparent;
     }
 
     50% {
-        border-color: #F2EBD3 transparent transparent #F2EBD3;
+        border-color: var(--o-color) transparent transparent var(--o-color);
     }
 
     75% {
-        border-color: #F2EBD3 transparent #F2EBD3 #F2EBD3;
+        border-color: var(--o-color) transparent var(--o-color) var(--o-color);
     }
 
     100% {
-        border-color: #F2EBD3;
+        border-color: var(--o-color);
     }
 }
 
@@ -138,8 +147,8 @@ tic-tac-toe-cell {
     position: absolute;
     top: 0px;
     content: "";
-    width: 1.8vh;
-    background-color: #545454;
+    width: 10%;
+    background-color: var(--x-color);
     transform-origin: top;
     animation: vertical-line-animation 0.1s ease-in;
     animation-fill-mode: forwards;
@@ -150,8 +159,8 @@ tic-tac-toe-cell {
     position: absolute;
     top: 0px;
     content: "";
-    width: 1.8vh;
-    background-color: #F2EBD3;
+    width: 10%;
+    background-color: var(--o-color);
     transform-origin: top;
     animation: vertical-line-animation 0.1s ease-in;
     animation-fill-mode: forwards;
@@ -172,8 +181,8 @@ tic-tac-toe-cell {
     position: absolute;
     left: 0px;
     content: "";
-    height: 1.8vh;
-    background-color: #545454;
+    height: 10%;
+    background-color: var(--x-color);
     transform-origin: left;
     animation: horizontal-line-animation 0.1s ease-in;
     animation-fill-mode: forwards;
@@ -184,8 +193,8 @@ tic-tac-toe-cell {
     position: absolute;
     left: 0px;
     content: "";
-    height: 1.8vh;
-    background-color: #F2EBD3;
+    height: 10%;
+    background-color: var(--o-color);
     transform-origin: left;
     animation: horizontal-line-animation 0.1s ease-in;
     animation-fill-mode: forwards;
@@ -204,11 +213,11 @@ tic-tac-toe-cell {
 .diagonal-backward-black-line::after {
     z-index: 1;
     position: absolute;
-    top: 0;
-    left: 1.5vh;
+    top: 0%;
+    left: 5%;
     content: "";
-    height: 1.8vh;
-    background-color: #545454;
+    height: 10%;
+    background-color: var(--x-color);
     transform: rotate(45deg);
     transform-origin: top left;
     animation: diagonal-line-animation 0.1s ease-in;
@@ -218,11 +227,11 @@ tic-tac-toe-cell {
 .diagonal-backward-white-line::after {
     z-index: 1;
     position: absolute;
-    top: 0;
-    left: 1.5vh;
+    top: 0%;
+    left: 5%;
     content: "";
-    height: 1.8vh;
-    background-color: #F2EBD3;
+    height: 10%;
+    background-color: var(--o-color);
     transform: rotate(45deg);
     transform-origin: top left;
     animation: diagonal-line-animation 0.1s ease-in;
@@ -232,11 +241,11 @@ tic-tac-toe-cell {
 .diagonal-forward-black-line::after {
     z-index: 1;
     position: absolute;
-    top: 0;
-    right: 1.5vh;
+    top: 0%;
+    right: 5%;
     content: "";
-    height: 1.8vh;
-    background-color: #545454;
+    height: 10%;
+    background-color: var(--x-color);
     transform: rotate(-45deg);
     transform-origin: top right;
     animation: diagonal-line-animation 0.1s ease-in;
@@ -246,11 +255,11 @@ tic-tac-toe-cell {
 .diagonal-forward-white-line::after {
     z-index: 1;
     position: absolute;
-    top: 0;
-    right: 1.5vh;
+    top: 0%;
+    right: 5%;
     content: "";
-    height: 1.8vh;
-    background-color: #F2EBD3;
+    height: 10%;
+    background-color: var(--o-color);
     transform: rotate(-45deg);
     transform-origin: top right;
     animation: diagonal-line-animation 0.1s ease-in;
@@ -267,6 +276,7 @@ tic-tac-toe-cell {
     }
 }
 
+/* TODO: not being used */
 .goes-right {
     animation: go-right 0.1s ease-in;
     animation-fill-mode: forwards;
@@ -308,7 +318,7 @@ tic-tac-toe-cell {
 }
 
 .circle-colored {
-    border-color: #F2EBD3;
+    border-color: var(--o-color);
 }
 
 @keyframes go-right {
@@ -320,8 +330,6 @@ tic-tac-toe-cell {
         left: 21.8vh
     }
 }
-
-
 
 @keyframes go-left {
     from {
@@ -343,7 +351,6 @@ tic-tac-toe-cell {
     }
 }
 
-
 @keyframes go-up {
     from {
         bottom: 0vh
@@ -354,10 +361,12 @@ tic-tac-toe-cell {
     }
 }
 
+/* -------------------*/
 #victory-container {
-    background-color: var(--dark-green);
-    width: 100%;
-    height: 100%;
+    /* background-color: var(--dark-green); */
+    justify-items: center;
+    width: 63.6vh;
+    height: 63.6vh;
     display: grid;
     grid-template-rows: 80% 30%;
 }
@@ -367,15 +376,20 @@ tic-tac-toe-cell {
     display: inline-grid;
     justify-items: center;
     align-items: center;
-    /* width: 70%; */
+    width: 80%;
     padding: 2vh;
-    background-color: rgba(255, 0, 0, 0.301);
+    /* background-color: rgba(255, 0, 0, 0.301); */
 }
 
+
 #winner-text {
-    position: absolute;
     display: inline-grid;
-    z-index: 1;
-    top: 70%;
-    /* background-color: rgba(255, 127, 80, 0.205); */
+    font-weight: bold;
+    color: var(--x-color);
+    font-size: 9vh;
+    letter-spacing: 1vh;
 }
+
+.border-thiccc-solid {
+    border: 5vh solid;
+} 
