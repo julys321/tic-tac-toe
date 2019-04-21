@@ -22,7 +22,7 @@ function drawGameBoard() {
     $('#tic-tac-toe-board').appendChild(ticTacToeElement);
 }
 
-async function onClick() {
+async function onCellClick() {
     if (ticTacToeStore.gameRunning) {
         await makeMove(this.id[17]);
         let victory = getVictory();
@@ -54,7 +54,7 @@ async function onVictory(victory) {
 function addBoardEvents() {
     ticTacToeStore.cells = [...$('.tic-tac-toe-cell')];
     ticTacToeStore.cells.forEach(e => {
-        e.addEventListener('click', onClick, {
+        e.addEventListener('click', onCellClick, {
             once: true
         });
         return e;
