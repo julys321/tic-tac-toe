@@ -62,7 +62,7 @@ body {
 
 .button:active {
     outline: 0;
-    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.329);
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.329) !important;
 }
 
 #restart-button {
@@ -407,7 +407,7 @@ body {
     width: 63.6vh;
     height: 63.6vh;
     display: grid;
-    grid-template-rows: 80% 30%;
+    grid-template-rows: 80% 20%;
 }
 
 #big-ox-container {
@@ -416,8 +416,6 @@ body {
     justify-items: center;
     align-items: center;
     width: 80%;
-    padding: 2vh;
-    /* background-color: rgba(255, 0, 0, 0.301); */
 }
 
 

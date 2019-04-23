@@ -46,7 +46,7 @@ async function onVictory(victory) {
     }
     victoryContainer.appendChild(bigOXContainer);
     let winnerText = constructNode('div', undefined, 'winner-text');
-    winnerText.innerText = 'LAIMETOJAS!';
+    winnerText.innerText = 'LAIMĖTOJAS!';
     victoryContainer.appendChild(winnerText);
     $('#tic-tac-toe-board').appendChild(victoryContainer);
 }
