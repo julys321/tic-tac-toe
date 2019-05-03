@@ -103,9 +103,8 @@ body {
     border-bottom: 3px solid var(--main-green);
 }
 
-.turn-button-is-clickable:active {
-    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.329);
-    border-bottom: 3px solid var(--main-green);
+.turn-button:active {
+    box-shadow: 0 0px 1px rgba(0, 0, 0, 0.363);
 }
 
 .x-turn-button {
