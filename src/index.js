@@ -8,16 +8,30 @@ let ticTacToeStore = {
     cells: [],
     isXTurn: true,
     turnCount: 0,
+    matchCount: 0,
     isGameRunning: true,
     victory: null
 };
 
 (function onInit() {
-    drawGameBoard();
-    addBoardEvents();
+    addGameResetButtonEvent();
+    startNewMatch();
 })();
 
-function drawGameBoard() {
+function startNewMatch() {
+    if (ticTacToeStore.matchCount) {
+        removeGameBoardContainer();
+    }
+    ticTacToeStore.matchCount++;
+    drawGameBoardContainer();
+    addBoardEvents();
+}
+
+function addGameResetButtonEvent() {
+    $('#restart-button').addEventListener('click', startNewMatch);
+}
+
+function drawGameBoardContainer() {
     let ticTacToeElement = constructNode('div', undefined, 'tic-tac-toe-cells-container');
     ticTacToeElement = addCells(ticTacToeElement);
     $('#tic-tac-toe-board').appendChild(ticTacToeElement);
@@ -40,13 +54,17 @@ async function onMatchVictory() {
     ticTacToeStore.isGameRunning = false;
     await runVictoryAnimation();
     await sleep(200);
-    $('#tic-tac-toe-board').removeChild($('#tic-tac-toe-cells-container'));
+    removeGameBoardContainer();
     $('#tic-tac-toe-board').appendChild(constructVictoryContainer());
+}
+
+function removeGameBoardContainer() {
+    $('#tic-tac-toe-board').removeChild($('#tic-tac-toe-cells-container'));
 }
 
 async function onMatchTie() {
     ticTacToeStore.isGameRunning = false;
-    $('#tic-tac-toe-board').removeChild($('#tic-tac-toe-cells-container'));
+    removeGameBoardContainer();
     $('#tic-tac-toe-board').appendChild(constructTieContainer());
 }
 
