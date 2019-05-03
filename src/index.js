@@ -7,8 +7,9 @@ import {
 let ticTacToeStore = {
     cells: [],
     isXTurn: true,
-    turnCounter: 0,
-    gameRunning: true
+    turnCount: 0,
+    isGameRunning: true,
+    victory: null
 };
 
 (function onInit() {
@@ -23,32 +24,63 @@ function drawGameBoard() {
 }
 
 async function onCellClick() {
-    if (ticTacToeStore.gameRunning) {
+    if (ticTacToeStore.isGameRunning) {
         await makeMove(this.id[17]);
-        let victory = getVictory();
+        let victory = getMatchVictory();
         if (victory) {
-            await onVictory(victory);
+            ticTacToeStore.victory = victory;
+            await onMatchVictory();
+        }else if (ticTacToeStore.turnCount == 9) {
+            await onMatchTie(); 
         }
     }
 }
 
-async function onVictory(victory) {
-    ticTacToeStore.gameRunning = false;
-    await runVictoryAnimation(victory);
+async function onMatchVictory() {
+    ticTacToeStore.isGameRunning = false;
+    await runVictoryAnimation();
     await sleep(200);
     $('#tic-tac-toe-board').removeChild($('#tic-tac-toe-cells-container'));
+    $('#tic-tac-toe-board').appendChild(constructVictoryContainer());
+}
+
+async function onMatchTie() {
+    ticTacToeStore.isGameRunning = false;
+    $('#tic-tac-toe-board').removeChild($('#tic-tac-toe-cells-container'));
+    $('#tic-tac-toe-board').appendChild(constructTieContainer());
+}
+
+function constructVictoryContainer() {
     let victoryContainer = constructNode('div', undefined, 'victory-container');
+    victoryContainer.appendChild(constructBigOXContainer());
+    victoryContainer.appendChild(constructMatchEndTextElement());
+    return victoryContainer;
+}
+
+function constructTieContainer() {
+    let tieContainer = constructNode('div', 'tie-container', 'tie-container');
+    tieContainer.appendChild(constructNode('div', 'tic-tac-toe-o border-thiccc-solid area-o', 'tic-tac-toe-big-o'));
+    tieContainer.appendChild(constructNode('div', 'tic-tac-toe-x area-x', 'tic-tac-toe-big-x'));
+    let matchEndTextElement = constructMatchEndTextElement();
+    matchEndTextElement.classList.add('area-text');
+    tieContainer.appendChild(matchEndTextElement);
+    return tieContainer;
+}
+
+function constructBigOXContainer() {
     let bigOXContainer = constructNode('div', undefined, 'big-ox-container');
-    if (victory.player == 'o') {
+    if (ticTacToeStore.victory.player == 'o') {
         bigOXContainer.appendChild(constructNode('div', 'tic-tac-toe-o border-thiccc-solid', 'tic-tac-toe-big-o'));
     } else {
         bigOXContainer.appendChild(constructNode('div', 'tic-tac-toe-x', 'tic-tac-toe-big-x'));
     }
-    victoryContainer.appendChild(bigOXContainer);
-    let winnerText = constructNode('div', undefined, 'winner-text');
-    winnerText.innerText = 'LAIMĖTOJAS!';
-    victoryContainer.appendChild(winnerText);
-    $('#tic-tac-toe-board').appendChild(victoryContainer);
+    return bigOXContainer;
+}
+
+function constructMatchEndTextElement() {
+    let matchEndTextElement = constructNode('div', 'match-end-text', 'match-end-text');
+    matchEndTextElement.innerText = ticTacToeStore.victory ? 'LAIMĖTOJAS!' : 'LYGIOSIOS!';
+    return matchEndTextElement;
 }
 
 function addBoardEvents() {
@@ -61,24 +93,24 @@ function addBoardEvents() {
     });
 }
 
-async function runVictoryAnimation(victory) {
+async function runVictoryAnimation() {
     let color;
-    if (victory.player == 'x') {
+    if (ticTacToeStore.victory.player == 'x') {
         color = 'black';
     } else {
         color = 'white';
     }
     let lineType;
-    if (victory.type == 'row') {
+    if (ticTacToeStore.victory.type == 'row') {
         lineType = 'horizontal';
-    } else if (victory.type == 'column') {
+    } else if (ticTacToeStore.victory.type == 'column') {
         lineType = 'vertical';
-    } else if (victory.type == 'diagonalBackwardRow') {
+    } else if (ticTacToeStore.victory.type == 'diagonalBackwardRow') {
         lineType = 'diagonal-backward';
-    } else if (victory.type == 'diagonalForwardRow') {
+    } else if (ticTacToeStore.victory.type == 'diagonalForwardRow') {
         lineType = 'diagonal-forward';
     }
-    victory.elements[0].classList.add(`${lineType}-${color}-line`);
+    ticTacToeStore.victory.elements[0].classList.add(`${lineType}-${color}-line`);
     await sleep(110);
 }
 
@@ -102,14 +134,14 @@ async function makeMove(index) {
         ticTacToeStore.isXTurn = true;
     }
     // ticTacToeStore.cells[index] = moveMaker;
-    let element = constructNode('div', 'tic-tac-toe-' + moveMaker, 'tic-tac-toe-move-' + ticTacToeStore.turnCounter);
+    let element = constructNode('div', 'tic-tac-toe-' + moveMaker, 'tic-tac-toe-move-' + ticTacToeStore.turnCount);
     let cell = await $('#tic-tac-toe-cell-' + index);
     cell.appendChild(element);
-    ticTacToeStore.turnCounter++;
+    ticTacToeStore.turnCount++;
     await sleep(110);
 }
 
-function getVictory() {
+function getMatchVictory() {
     let rowVictory = getRowVictory();
     if (rowVictory) {
         return rowVictory;

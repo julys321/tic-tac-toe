@@ -183,14 +183,13 @@ body {
     display: inline-grid;
     justify-items: center;
     align-items: center;
-    padding: 2vh;
 }
 
 .tic-tac-toe-x {
     position: relative;
     display: inline-block;
-    width: 70%;
-    height: 70%;
+    width: 60%;
+    height: 60%;
 }
 
 .tic-tac-toe-x::before {
@@ -233,8 +232,8 @@ body {
 .tic-tac-toe-o {
     position: relative;
     z-index: 1;
-    width: 60%;
-    height: 60%;
+    width: 50%;
+    height: 50%;
     border: 1.8vh solid;
     border-radius: 50%;
     transform: rotate(-45deg);
@@ -517,7 +516,7 @@ body {
 .area-text{
     grid-area: text;
 }
-#winner-text {
+.match-end-text {
     display: inline-grid;
     font-weight: bold;
     color: var(--x-color);
@@ -525,12 +524,9 @@ body {
     letter-spacing: 1vh;
 }
 
-.border-thiccc-solid {
+.border-thiccccc-solid {
     border: 5vh solid;
 }
-
-/* <div id="tie-container" class="tie-container">
-    <div id="tic-tac-toe-big-x" class="tic-tac-toe-x area-x"></div>
-    <div id="tic-tac-toe-big-o" class="tic-tac-toe-o border-thiccc-solid area-o"></div>
-    <div id="winner-text" class="area-text">LYGIOSIOS!</div>
-   </div> */
+.border-thiccc-solid {
+    border: 3vh solid;
+}
