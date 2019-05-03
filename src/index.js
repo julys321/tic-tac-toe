@@ -3,7 +3,6 @@ import {
     constructNode,
     sleep
 } from './helpers.js';
-
 let ticTacToeStore = {
     cells: [],
     isXTurn: true,
@@ -19,12 +18,41 @@ let ticTacToeStore = {
 })();
 
 function startNewMatch() {
-    if (ticTacToeStore.matchCount) {
+    if (ticTacToeStore.turnCount == 9 && !ticTacToeStore.isGameRunning) {
+        removeTieContainer();
+    } else if (ticTacToeStore.turnCount < 9 && !ticTacToeStore.isGameRunning) {
+        removeVictoryContainer();
+    } else if (ticTacToeStore.matchCount) {
         removeGameBoardContainer();
     }
     ticTacToeStore.matchCount++;
+    ticTacToeStore.turnCount = 0;
+    ticTacToeStore.isXTurn = true;
+    ticTacToeStore.victory = null;
+    ticTacToeStore.isGameRunning = true;
     drawGameBoardContainer();
-    addBoardEvents();
+    addCellEvents();
+}
+async function onMatchVictory() {
+    ticTacToeStore.isGameRunning = false;
+    await runVictoryAnimation();
+    await sleep(200);
+    removeGameBoardContainer();
+    $('#tic-tac-toe-board').appendChild(constructVictoryContainer());
+}
+
+async function onMatchTie() {
+    ticTacToeStore.isGameRunning = false;
+    removeGameBoardContainer();
+    $('#tic-tac-toe-board').appendChild(constructTieContainer());
+}
+
+function removeTieContainer() {
+    $('#tic-tac-toe-board').removeChild($('#tie-container'));
+}
+
+function removeVictoryContainer() {
+    $('#tic-tac-toe-board').removeChild($('#victory-container'));
 }
 
 function addGameResetButtonEvent() {
@@ -50,28 +78,16 @@ async function onCellClick() {
     }
 }
 
-async function onMatchVictory() {
-    ticTacToeStore.isGameRunning = false;
-    await runVictoryAnimation();
-    await sleep(200);
-    removeGameBoardContainer();
-    $('#tic-tac-toe-board').appendChild(constructVictoryContainer());
-}
-
 function removeGameBoardContainer() {
+    $('#tic-tac-toe-cells-container').innerHTML = '';
     $('#tic-tac-toe-board').removeChild($('#tic-tac-toe-cells-container'));
-}
-
-async function onMatchTie() {
-    ticTacToeStore.isGameRunning = false;
-    removeGameBoardContainer();
-    $('#tic-tac-toe-board').appendChild(constructTieContainer());
 }
 
 function constructVictoryContainer() {
     let victoryContainer = constructNode('div', undefined, 'victory-container');
     victoryContainer.appendChild(constructBigOXContainer());
     victoryContainer.appendChild(constructMatchEndTextElement());
+    victoryContainer.addEventListener('click', startNewMatch);
     return victoryContainer;
 }
 
@@ -82,13 +98,14 @@ function constructTieContainer() {
     let matchEndTextElement = constructMatchEndTextElement();
     matchEndTextElement.classList.add('area-text');
     tieContainer.appendChild(matchEndTextElement);
+    tieContainer.addEventListener('click', startNewMatch);
     return tieContainer;
 }
 
 function constructBigOXContainer() {
     let bigOXContainer = constructNode('div', undefined, 'big-ox-container');
     if (ticTacToeStore.victory.player == 'o') {
-        bigOXContainer.appendChild(constructNode('div', 'tic-tac-toe-o border-thiccc-solid', 'tic-tac-toe-big-o'));
+        bigOXContainer.appendChild(constructNode('div', 'tic-tac-toe-o border-thiccccc-solid', 'tic-tac-toe-big-o'));
     } else {
         bigOXContainer.appendChild(constructNode('div', 'tic-tac-toe-x', 'tic-tac-toe-big-x'));
     }
@@ -101,12 +118,10 @@ function constructMatchEndTextElement() {
     return matchEndTextElement;
 }
 
-function addBoardEvents() {
+function addCellEvents() {
     ticTacToeStore.cells = [...$('.tic-tac-toe-cell')];
     ticTacToeStore.cells.forEach(e => {
-        e.addEventListener('click', onCellClick, {
-            once: true
-        });
+        e.addEventListener('click', onCellClick);
         return e;
     });
 }
@@ -152,11 +167,17 @@ function addCells(containerElement) {
 }
 
 async function makeMove(index) {
-    let moveMaker = getMoveMakerSymbol();
-    let moveElement = constructNode('div', 'tic-tac-toe-' + moveMaker, 'tic-tac-toe-move-' + ticTacToeStore.turnCount);
-    $('#tic-tac-toe-cell-' + index).appendChild(moveElement);
-    ticTacToeStore.turnCount++;
-    await sleep(110);
+    if (!isMoveAlreadyMade(index)) {
+        let moveMaker = getMoveMakerSymbol();
+        let moveElement = constructNode('div', 'tic-tac-toe-' + moveMaker, 'tic-tac-toe-move-' + ticTacToeStore.turnCount);
+        $('#tic-tac-toe-cell-' + index).appendChild(moveElement);
+        ticTacToeStore.turnCount++;
+        await sleep(110);
+    }
+}
+
+function isMoveAlreadyMade(index) {
+    return $('#tic-tac-toe-cell-' + index).innerHTML == '' ? false : true;
 }
 
 function getMoveMakerSymbol() {
