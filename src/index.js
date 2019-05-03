@@ -36,7 +36,7 @@ function startNewMatch() {
     setXTurnButtonActive();
     $('#x-turn-button').addEventListener('click', choosePlayer);
     $('#o-turn-button').addEventListener('click', choosePlayer);
-
+    $('#tic-tac-toe-information-text').innerText = 'Pradekite zaidima arba pasirinkite zaideja';
     drawGameBoardContainer();
     addCellEvents();
 }
@@ -64,6 +64,7 @@ function setOTurnButtonActive() {
 }
 
 async function onMatchVictory() {
+    $('#tic-tac-toe-information-text').innerText = 'Zaidimas baigtas';
     ticTacToeStore.isGameRunning = false;
     await runVictoryAnimation();
     await sleep(200);
@@ -75,6 +76,7 @@ async function onMatchVictory() {
 }
 
 async function onMatchTie() {
+    $('#tic-tac-toe-information-text').innerText = 'Zaidimas baigtas';
     ticTacToeStore.isGameRunning = false;
     removeGameBoardContainer();
     $('#tic-tac-toe-board').appendChild(constructTieContainer());
@@ -204,8 +206,10 @@ async function makeMove(index) {
         let moveMaker = getMoveMakerSymbol();
         if (moveMaker == 'o') {
             setXTurnButtonActive();
+            $('#tic-tac-toe-information-text').innerText = 'X ejimas';
         } else {
             setOTurnButtonActive();
+            $('#tic-tac-toe-information-text').innerText = 'O ejimas';
         }
         let moveElement = constructNode('div', 'tic-tac-toe-' + moveMaker, 'tic-tac-toe-move-' + ticTacToeStore.turnCount);
         $('#tic-tac-toe-cell-' + index).appendChild(moveElement);
