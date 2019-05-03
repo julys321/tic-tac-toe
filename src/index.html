@@ -12,20 +12,23 @@
 
 <body>
     <script type="module" src='./index.js'></script>
-    <div id="tic-tac-toe">
+    <div id="tic-tac-toe" class="tic-tac-toe">
         <div id="tic-tac-toe-top">
-            <select id="select-difficulty">
-                Da text
-                <option id="difficulty-easy" value="Lengvas">Lengvas</option>
-                <option id="difficulty-medium" value="Vidutinis">Vidutinis</option>
-                <option id="difficulty-hard" value="Sunkus">Sunkus</option>
-                <option id="difficulty-immposible" value="Neimanomas">Neimanomas</option>
-            </select>
-            <div id="tic-tac-toe-information">
-                <input id="x-turn-button" class="button" type="button">X</input>
-                <input id="o-turn-button" class="button" type="button">O</input>
-                <div id="tic-tac-toe-information-text">X eile</div>
+            <div id="select-container" class="select difficulty">
+                <select id="select-difficulty" class="select-dificulty">
+                    <option id="difficulty-easy" value="Lengvas">Lengvas</option>
+                    <option id="difficulty-medium" value="Vidutinis">Vidutinis</option>
+                    <option id="difficulty-hard" value="Sunkus">Sunkus</option>
+                    <option id="difficulty-immposible" value="Neimanomas">Neimanomas</option>
+                </select>
             </div>
+            <a id="x-turn-button" class="turn-button x-turn-button turn-button-is-clickable turn-button-is-active">X<div
+                    id="x-score" class="x-score score-number">1</div>
+            </a>
+            <a id="o-turn-button" class="turn-button o-turn-button turn-button-is-clickable">O<div id="0-score"
+                    class="o-score score-number">0</div>
+            </a>
+            <div id="tic-tac-toe-information-text" class="info-text">X eile</div>
         </div>
         <div id="tic-tac-toe-board"></div>
         <div id="tic-tac-toe-bottom">

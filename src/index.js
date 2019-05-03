@@ -112,7 +112,7 @@ async function makeMove(index) {
 function getVictory() {
     let rowVictory = getRowVictory();
     if (rowVictory) {
-        return rowVictory
+        return rowVictory;
     }
     let columnVictory = getColumnVictory();
     if (columnVictory) {
