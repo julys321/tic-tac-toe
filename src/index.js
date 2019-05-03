@@ -8,6 +8,8 @@ let ticTacToeStore = {
     isXTurn: true,
     turnCount: 0,
     matchCount: 0,
+    xVictoryCount: 0,
+    oVictoryCount: 0,
     isGameRunning: true,
     victory: null
 };
@@ -31,7 +33,7 @@ function startNewMatch() {
     ticTacToeStore.victory = null;
     ticTacToeStore.isGameRunning = true;
     //TODO:refactor
-    $('#x-turn-button').classList.add('turn-button-is-active');
+    setXTurnButtonActive();
     $('#x-turn-button').addEventListener('click', choosePlayer);
     $('#o-turn-button').addEventListener('click', choosePlayer);
 
@@ -42,16 +44,32 @@ function startNewMatch() {
 function choosePlayer() {
     if (ticTacToeStore.turnCount == 0) {
         if (this.innerHTML[0] == 'O') {
-            $('#o-turn-button').classList.add('turn-button-is-active');
-            $('#x-turn-button').classList.remove('turn-button-is-active');
+            setOTurnButtonActive();
             ticTacToeStore.isXTurn = false;
+        } else {
+            setXTurnButtonActive();
+            ticTacToeStore.isXTurn = true;
         }
     }
 }
+
+function setXTurnButtonActive() {
+    $('#x-turn-button').classList.add('turn-button-is-active');
+    $('#o-turn-button').classList.remove('turn-button-is-active');
+}
+
+function setOTurnButtonActive() {
+    $('#o-turn-button').classList.add('turn-button-is-active');
+    $('#x-turn-button').classList.remove('turn-button-is-active');
+}
+
 async function onMatchVictory() {
     ticTacToeStore.isGameRunning = false;
     await runVictoryAnimation();
     await sleep(200);
+    console.log(ticTacToeStore.victory.player)
+    ticTacToeStore[ticTacToeStore.victory.player + 'VictoryCount']++;
+    $('#' + ticTacToeStore.victory.player + '-score').innerText = ticTacToeStore[ticTacToeStore.victory.player + 'VictoryCount'];
     removeGameBoardContainer();
     $('#tic-tac-toe-board').appendChild(constructVictoryContainer());
 }
