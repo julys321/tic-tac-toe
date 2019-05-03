@@ -30,8 +30,8 @@ async function onCellClick() {
         if (victory) {
             ticTacToeStore.victory = victory;
             await onMatchVictory();
-        }else if (ticTacToeStore.turnCount == 9) {
-            await onMatchTie(); 
+        } else if (ticTacToeStore.turnCount == 9) {
+            await onMatchTie();
         }
     }
 }
@@ -94,12 +94,14 @@ function addBoardEvents() {
 }
 
 async function runVictoryAnimation() {
-    let color;
-    if (ticTacToeStore.victory.player == 'x') {
-        color = 'black';
-    } else {
-        color = 'white';
-    }
+    let color = getPlayerColor();
+    let lineType = getVictoryAnimationLineType();
+    ticTacToeStore.victory.elements[0].classList.add(`${lineType}-${color}-line`);
+    await sleep(110);
+
+}
+
+function getVictoryAnimationLineType() {
     let lineType;
     if (ticTacToeStore.victory.type == 'row') {
         lineType = 'horizontal';
@@ -110,11 +112,18 @@ async function runVictoryAnimation() {
     } else if (ticTacToeStore.victory.type == 'diagonalForwardRow') {
         lineType = 'diagonal-forward';
     }
-    ticTacToeStore.victory.elements[0].classList.add(`${lineType}-${color}-line`);
-    await sleep(110);
+    return lineType;
 }
 
-
+function getPlayerColor() {
+    let color;
+    if (ticTacToeStore.victory.player == 'x') {
+        color = 'black';
+    } else {
+        color = 'white';
+    }
+    return color;
+}
 
 function addCells(containerElement) {
     let size = 9;
@@ -125,6 +134,14 @@ function addCells(containerElement) {
 }
 
 async function makeMove(index) {
+    let moveMaker = getMoveMakerSymbol();
+    let moveElement = constructNode('div', 'tic-tac-toe-' + moveMaker, 'tic-tac-toe-move-' + ticTacToeStore.turnCount);
+    $('#tic-tac-toe-cell-' + index).appendChild(moveElement);
+    ticTacToeStore.turnCount++;
+    await sleep(110);
+}
+
+function getMoveMakerSymbol() {
     let moveMaker = '';
     if (ticTacToeStore.isXTurn) {
         moveMaker = 'x';
@@ -133,12 +150,7 @@ async function makeMove(index) {
         moveMaker = 'o';
         ticTacToeStore.isXTurn = true;
     }
-    // ticTacToeStore.cells[index] = moveMaker;
-    let element = constructNode('div', 'tic-tac-toe-' + moveMaker, 'tic-tac-toe-move-' + ticTacToeStore.turnCount);
-    let cell = await $('#tic-tac-toe-cell-' + index);
-    cell.appendChild(element);
-    ticTacToeStore.turnCount++;
-    await sleep(110);
+    return moveMaker;
 }
 
 function getMatchVictory() {
