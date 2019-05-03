@@ -30,8 +30,23 @@ function startNewMatch() {
     ticTacToeStore.isXTurn = true;
     ticTacToeStore.victory = null;
     ticTacToeStore.isGameRunning = true;
+    //TODO:refactor
+    $('#x-turn-button').classList.add('turn-button-is-active');
+    $('#x-turn-button').addEventListener('click', choosePlayer);
+    $('#o-turn-button').addEventListener('click', choosePlayer);
+
     drawGameBoardContainer();
     addCellEvents();
+}
+
+function choosePlayer() {
+    if (ticTacToeStore.turnCount == 0) {
+        if (this.innerHTML[0] == 'O') {
+            $('#o-turn-button').classList.add('turn-button-is-active');
+            $('#x-turn-button').classList.remove('turn-button-is-active');
+            ticTacToeStore.isXTurn = false;
+        }
+    }
 }
 async function onMatchVictory() {
     ticTacToeStore.isGameRunning = false;
