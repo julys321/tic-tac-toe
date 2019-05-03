@@ -202,6 +202,11 @@ function addCells(containerElement) {
 async function makeMove(index) {
     if (!isMoveAlreadyMade(index)) {
         let moveMaker = getMoveMakerSymbol();
+        if (moveMaker == 'o') {
+            setXTurnButtonActive();
+        } else {
+            setOTurnButtonActive();
+        }
         let moveElement = constructNode('div', 'tic-tac-toe-' + moveMaker, 'tic-tac-toe-move-' + ticTacToeStore.turnCount);
         $('#tic-tac-toe-cell-' + index).appendChild(moveElement);
         ticTacToeStore.turnCount++;
