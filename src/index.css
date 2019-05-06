@@ -55,7 +55,8 @@ body {
     position: relative;
 
 }
-.select-dificulty{
+
+.select-dificulty {
     height: 100%;
     width: 100%;
     cursor: pointer;
@@ -67,13 +68,16 @@ body {
     -moz-appearance: none;
     appearance: none;
 }
+
 .select-dificulty::-ms-expand {
     display: none;
 }
+
 .select-dificulty:focus {
     outline: none;
 }
-.select:after{
+
+.select:after {
     content: "▼";
     position: absolute;
     left: 0;
@@ -114,7 +118,8 @@ body {
 .o-turn-button {
     grid-area: y-turn-button;
 }
-.score-number{
+
+.score-number {
     float: right;
     color: var(--grey-text);
 }
@@ -396,92 +401,6 @@ body {
     }
 }
 
-/* TODO: not being used */
-.goes-right {
-    animation: go-right 0.1s ease-in;
-    animation-fill-mode: forwards;
-}
-
-.goes-right-down {
-    animation: go-right 0.1s ease-in, go-down 0.1s ease-in;
-    animation-fill-mode: forwards;
-}
-
-.goes-right-up {
-    animation: go-right 0.1s ease-in, go-up 0.1s ease-in;
-    animation-fill-mode: forwards;
-}
-
-.goes-left {
-    animation: go-left 0.1s ease-in;
-    animation-fill-mode: forwards;
-}
-
-.goes-left-down {
-    animation: go-left 0.1s ease-in, go-down 0.1s ease-in;
-    animation-fill-mode: forwards;
-}
-
-.goes-left-up {
-    animation: go-left 0.1s ease-in, go-up 0.1s ease-in;
-    animation-fill-mode: forwards;
-}
-
-.goes-up {
-    animation: go-up 0.1s ease-in;
-    animation-fill-mode: forwards;
-}
-
-.goes-down {
-    animation: go-down 0.1s ease-in;
-    animation-fill-mode: forwards;
-}
-
-.circle-colored {
-    border-color: var(--o-color);
-}
-
-@keyframes go-right {
-    from {
-        left: 0vh
-    }
-
-    to {
-        left: 21.8vh
-    }
-}
-
-@keyframes go-left {
-    from {
-        right: 0vh
-    }
-
-    to {
-        right: 21.8vh
-    }
-}
-
-@keyframes go-down {
-    from {
-        top: 0vh
-    }
-
-    to {
-        top: 21.8vh
-    }
-}
-
-@keyframes go-up {
-    from {
-        bottom: 0vh
-    }
-
-    to {
-        bottom: 21.8vh
-    }
-}
-
-/* -------------------*/
 #victory-container {
     justify-items: center;
     width: 63.6vh;
@@ -490,6 +409,7 @@ body {
     grid-template-rows: 80% 20%;
     cursor: pointer;
 }
+
 #big-ox-container {
     position: relative;
     display: inline-grid;
@@ -497,7 +417,8 @@ body {
     align-items: center;
     width: 80%;
 }
-.tie-container{
+
+.tie-container {
     cursor: pointer;
     justify-items: center;
     align-items: center;
@@ -506,17 +427,21 @@ body {
     display: grid;
     grid-template-rows: auto 50% 20% auto;
     grid-template-columns: 50% 50%;
-    grid-template-areas: '. .' 'x o' 'text text' '. .';
+    grid-template-areas: '. .''x o''text text''. .';
 }
-.area-x{
+
+.area-x {
     grid-area: x;
 }
-.area-o{
+
+.area-o {
     grid-area: o;
 }
-.area-text{
+
+.area-text {
     grid-area: text;
 }
+
 .match-end-text {
     display: inline-grid;
     font-weight: bold;
@@ -528,6 +453,7 @@ body {
 .border-thiccccc-solid {
     border: 5vh solid;
 }
+
 .border-thiccc-solid {
     border: 3vh solid;
 }
