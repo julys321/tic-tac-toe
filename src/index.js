@@ -1,7 +1,8 @@
 import {
     $,
     constructNode,
-    sleep
+    sleep,
+    getRandomInt
 } from './helpers.js';
 let ticTacToeStore = {
     cells: [],
@@ -11,44 +12,50 @@ let ticTacToeStore = {
     xVictoryCount: 0,
     oVictoryCount: 0,
     isGameRunning: true,
-    victory: null
+    victory: undefined,
+    gameMode: $('#select-difficulty').value,
+    lastMoveIndex: undefined
 };
 
 (function onInit() {
+    $('#select-difficulty').addEventListener('change', function () {
+        ticTacToeStore.gameMode = this.value;
+        startNewMatch();
+    });
     addGameResetButtonEvent();
     startNewMatch();
 })();
 
 function startNewMatch() {
-    if (ticTacToeStore.turnCount == 9 && !ticTacToeStore.isGameRunning) {
+    if (!ticTacToeStore.victory && ticTacToeStore.turnCount == 9) {
         removeTieContainer();
-    } else if (ticTacToeStore.turnCount < 9 && !ticTacToeStore.isGameRunning) {
+    } else if (!ticTacToeStore.isGameRunning) {
         removeVictoryContainer();
     } else if (ticTacToeStore.matchCount) {
         removeGameBoardContainer();
     }
     ticTacToeStore.matchCount++;
-    ticTacToeStore.turnCount = 0;
-    ticTacToeStore.isXTurn = true;
-    ticTacToeStore.victory = null;
-    ticTacToeStore.isGameRunning = true;
-    //TODO:refactor
+    initializeTicTacToeStore();
     setXTurnButtonActive();
-    $('#x-turn-button').addEventListener('click', choosePlayer);
-    $('#o-turn-button').addEventListener('click', choosePlayer);
+    $('#o-turn-button').addEventListener('click', chooseOPlayer);
     $('#tic-tac-toe-information-text').innerText = 'Pradekite zaidima arba pasirinkite zaideja';
     drawGameBoardContainer();
     addCellEvents();
 }
 
-function choosePlayer() {
-    if (ticTacToeStore.turnCount == 0) {
-        if (this.innerHTML[0] == 'O') {
+function initializeTicTacToeStore() {
+    ticTacToeStore.turnCount = 0;
+    ticTacToeStore.isXTurn = true;
+    ticTacToeStore.victory = undefined;
+    ticTacToeStore.isGameRunning = true;
+    ticTacToeStore.lastMoveIndex = undefined;
+}
+
+function chooseOPlayer() {
+    if (ticTacToeStore.gameMode != 'two-players') {
+        if (ticTacToeStore.turnCount == 0) {
             setOTurnButtonActive();
-            ticTacToeStore.isXTurn = false;
-        } else {
-            setXTurnButtonActive();
-            ticTacToeStore.isXTurn = true;
+            makeMove(getAIMove());
         }
     }
 }
@@ -68,7 +75,6 @@ async function onMatchVictory() {
     ticTacToeStore.isGameRunning = false;
     await runVictoryAnimation();
     await sleep(200);
-    console.log(ticTacToeStore.victory.player)
     ticTacToeStore[ticTacToeStore.victory.player + 'VictoryCount']++;
     $('#' + ticTacToeStore.victory.player + '-score').innerText = ticTacToeStore[ticTacToeStore.victory.player + 'VictoryCount'];
     removeGameBoardContainer();
@@ -103,11 +109,120 @@ function drawGameBoardContainer() {
 async function onCellClick() {
     if (ticTacToeStore.isGameRunning) {
         await makeMove(this.id[17]);
-        let victory = getMatchVictory();
-        if (victory) {
-            ticTacToeStore.victory = victory;
-            await onMatchVictory();
-        } else if (ticTacToeStore.turnCount == 9) {
+        if (isItMatchEnd()) {
+            await endMatch();
+        } else {
+            if (ticTacToeStore.gameMode != 'two-players') {
+                await makeMove(getAIMove());
+                if (isItMatchEnd()) {
+                    await endMatch();
+                }
+            }
+        }
+    }
+}
+
+function getAIMove() {
+    switch (ticTacToeStore.gameMode) {
+        case 'easy':
+            return getEasyAIMove();
+        case 'medium':
+            return getMediumAIMove();
+        case 'immposible':
+            break;
+    }
+}
+
+function getMediumAIMove() {
+    let finishingMoveIndex = getLineCompletingIndex(getCurrentPlayer());
+    if (finishingMoveIndex) {
+        return finishingMoveIndex;
+    }
+    let defensiveMoveIndex = getLineCompletingIndex(getEnemyPlayer());
+    if (defensiveMoveIndex) {
+        return defensiveMoveIndex;
+    }
+    return getEasyAIMove();
+}
+
+function getCurrentPlayer() {
+    return ticTacToeStore.isXTurn ? 'x' : 'o';
+}
+
+function getEnemyPlayer() {
+    return ticTacToeStore.isXTurn ? 'o' : 'x';
+}
+
+function getLineCompletingIndex(player) {
+    let possibleMoves = getPossibleMoves();
+    let playerCells = getPlayerCells(player);
+    //rows
+    for (let i = 0; i < 9; i += 3) {
+        if ([i, i + 1, i + 2].filter(e => playerCells.includes(e)).length == 2) {
+            let moveIndex = [i, i + 1, i + 2].filter(e => possibleMoves.includes(e));
+            if (moveIndex.length != 0) {
+                return moveIndex;
+            }
+        }
+    }
+    //columns
+    for (let i = 0; i < 3; i++) {
+        if ([i, i + 3, i + 6].filter(e => playerCells.includes(e)).length == 2) {
+            let moveIndex = [i, i + 3, i + 6].filter(e => possibleMoves.includes(e));
+            if (moveIndex.length != 0) {
+                return moveIndex;
+            }
+        }
+    }
+    // /
+    if ([2, 4, 6].filter(e => playerCells.includes(e)).length == 2) {
+        let moveIndex = [2, 4, 6].filter(e => possibleMoves.includes(e));
+        if (moveIndex.length != 0) {
+            return moveIndex;
+        }
+    }
+    // \
+    if ([0, 4, 8].filter(e => playerCells.includes(e)).length == 2) {
+        let moveIndex = [0, 4, 8].filter(e => possibleMoves.includes(e));
+        if (moveIndex.length != 0) {
+            return moveIndex;
+        }
+    }
+}
+
+function getPlayerCells(player) {
+    let enemyCells = [...Array(9).keys()].filter((e, i) => !isMoveAlreadyMadeByPlayer(i, player));
+    return enemyCells;
+}
+
+function getEasyAIMove() {
+    let possibleMoves = getPossibleMoves();
+    return possibleMoves[getRandomInt(possibleMoves.length)];
+}
+
+function getPossibleMoves() {
+    let possibleMoves = [...Array(9).keys()].filter((e, i) => !isMoveAlreadyMade(i));
+    return possibleMoves;
+}
+
+function isItMatchEnd() {
+    let victory = getMatchVictory();
+    if (victory) {
+        ticTacToeStore.victory = victory;
+        return true;
+    } else {
+        if (ticTacToeStore.turnCount == 9) {
+            return true;
+        }
+    }
+    return false;
+}
+
+async function endMatch() {
+    if (ticTacToeStore.victory) {
+        await onMatchVictory();
+    } else {
+        if (ticTacToeStore.turnCount == 9) {
             await onMatchTie();
         }
     }
@@ -203,6 +318,7 @@ function addCells(containerElement) {
 
 async function makeMove(index) {
     if (!isMoveAlreadyMade(index)) {
+        ticTacToeStore.lastMoveIndex = index;
         let moveMaker = getMoveMakerSymbol();
         if (moveMaker == 'o') {
             setXTurnButtonActive();
@@ -216,6 +332,10 @@ async function makeMove(index) {
         ticTacToeStore.turnCount++;
         await sleep(110);
     }
+}
+
+function isMoveAlreadyMadeByPlayer(index, player) {
+    return document.querySelector(`#tic-tac-toe-cell-${index} > .tic-tac-toe-${player}`) ? false : true;
 }
 
 function isMoveAlreadyMade(index) {

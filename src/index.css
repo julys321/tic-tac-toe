@@ -488,6 +488,7 @@ body {
     height: 63.6vh;
     display: grid;
     grid-template-rows: 80% 20%;
+    cursor: pointer;
 }
 #big-ox-container {
     position: relative;
@@ -497,6 +498,7 @@ body {
     width: 80%;
 }
 .tie-container{
+    cursor: pointer;
     justify-items: center;
     align-items: center;
     width: 63.6vh;

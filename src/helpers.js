@@ -15,8 +15,13 @@ function constructNode(tag, className, id = tag) {
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+}
 export {
     $,
     constructNode,
-    sleep
+    sleep,
+    getRandomInt
 };
