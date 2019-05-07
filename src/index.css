@@ -1,7 +1,7 @@
 :root {
-    --light-green: hsl(174, 81%, 61%);
-    --dark-green: #0DA192;
-    --main-green: #14BDAC;
+    --light-green: hsl(241, 81%, 61%);
+    --dark-green: rgb(43, 161, 13);
+    --main-green: rgb(102, 189, 20);
     --x-color: #545454;
     --o-color: #F2EBD3;
     --grey-text: #757575;
