@@ -108,14 +108,16 @@ function drawGameBoardContainer() {
 
 async function onCellClick() {
     if (ticTacToeStore.isGameRunning) {
-        await makeMove(this.id[17]);
-        if (isItMatchEnd()) {
-            await endMatch();
-        } else {
-            if (ticTacToeStore.gameMode != 'two-players') {
-                await makeMove(getAIMove());
-                if (isItMatchEnd()) {
-                    await endMatch();
+        if (!isMoveAlreadyMade(this.id[17])) {
+            await makeMove(this.id[17]);
+            if (isItMatchEnd()) {
+                await endMatch();
+            } else {
+                if (ticTacToeStore.gameMode != 'two-players') {
+                    await makeMove(getAIMove());
+                    if (isItMatchEnd()) {
+                        await endMatch();
+                    }
                 }
             }
         }
@@ -317,22 +319,21 @@ function addCells(containerElement) {
 }
 
 async function makeMove(index) {
-    if (!isMoveAlreadyMade(index)) {
-        ticTacToeStore.lastMoveIndex = index;
-        let moveMaker = getMoveMakerSymbol();
-        if (moveMaker == 'o') {
-            setXTurnButtonActive();
-            $('#tic-tac-toe-information-text').innerText = 'X ejimas';
-        } else {
-            setOTurnButtonActive();
-            $('#tic-tac-toe-information-text').innerText = 'O ejimas';
-        }
-        let moveElement = constructNode('div', 'tic-tac-toe-' + moveMaker, 'tic-tac-toe-move-' + ticTacToeStore.turnCount);
-        $('#tic-tac-toe-cell-' + index).appendChild(moveElement);
-        ticTacToeStore.turnCount++;
-        await sleep(110);
+    ticTacToeStore.lastMoveIndex = index;
+    let moveMaker = getMoveMakerSymbol();
+    if (moveMaker == 'o') {
+        setXTurnButtonActive();
+        $('#tic-tac-toe-information-text').innerText = 'X ejimas';
+    } else {
+        setOTurnButtonActive();
+        $('#tic-tac-toe-information-text').innerText = 'O ejimas';
     }
+    let moveElement = constructNode('div', 'tic-tac-toe-' + moveMaker, 'tic-tac-toe-move-' + ticTacToeStore.turnCount);
+    $('#tic-tac-toe-cell-' + index).appendChild(moveElement);
+    ticTacToeStore.turnCount++;
+    await sleep(110);
 }
+
 
 function isMoveAlreadyMadeByPlayer(index, player) {
     return document.querySelector(`#tic-tac-toe-cell-${index} > .tic-tac-toe-${player}`) ? false : true;
