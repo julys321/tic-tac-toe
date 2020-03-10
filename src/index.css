@@ -1,459 +1,456 @@
 :root {
-    --light-green: hsl(174, 81%, 61%);
-    --dark-green: #0DA192;
-    --main-green: #14BDAC;
-    --x-color: #545454;
-    --o-color: #F2EBD3;
-    --grey-text: #757575;
-    --gui-main-color: white;
+  --light-green: hsl(174, 81%, 61%);
+  --dark-green: #0da192;
+  --main-green: #14bdac;
+  --x-color: #545454;
+  --o-color: #f2ebd3;
+  --grey-text: #757575;
+  --gui-main-color: white;
 }
 
 * {
-    margin: 0;
-    /*normalize*/
+  margin: 0;
+  /*normalize*/
 }
 
 body {
-    display: grid;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    text-align: center;
-    font-family: 'Anton', sans-serif;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  font-family: "Anton", sans-serif;
 }
 
 .tic-tac-toe {
-    display: inline-grid;
-    justify-items: center;
-    grid-template-rows: 20.2vh 69.6vh 6.2vh;
-    width: 96vw;
-    /* margin: 2vw; */
-    min-width: 63.5vh;
-    background-color: var(--gui-main-color);
-    box-shadow: 0 0px 10px rgba(0, 0, 0, 0.329);
-    border-radius: 10px;
+  display: inline-grid;
+  justify-items: center;
+  grid-template-rows: 20.2vh 69.6vh 6.2vh;
+  width: 96vw;
+  /* margin: 2vw; */
+  min-width: 63.5vh;
+  background-color: var(--gui-main-color);
+  box-shadow: 0 0px 10px rgba(0, 0, 0, 0.329);
+  border-radius: 10px;
 }
 
 .tic-tac-toe-top {
-    display: inline-grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    grid-gap: 2%;
-    grid-template-areas:
-        "difficulty difficulty . . . ."
-        ". x-turn-button x-turn-button y-turn-button y-turn-button ."
-        ". info-text info-text info-text info-text .";
-    width: 98%;
-    padding: 1%;
+  display: inline-grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-gap: 2%;
+  grid-template-areas:
+    "difficulty difficulty . . . ."
+    ". x-turn-button x-turn-button y-turn-button y-turn-button ."
+    ". info-text info-text info-text info-text .";
+  width: 98%;
+  padding: 1%;
 }
 
 .difficulty {
-    grid-area: difficulty;
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-
+  grid-area: difficulty;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
 }
 
 .select-dificulty {
-    height: 100%;
-    width: 100%;
-    cursor: pointer;
-    border: none;
-    padding-left: 9%;
-    outline: none;
-    font-size: 16px;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+  border: none;
+  padding-left: 9%;
+  outline: none;
+  font-size: 16px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 .select-dificulty::-ms-expand {
-    display: none;
+  display: none;
 }
 
 .select-dificulty:focus {
-    outline: none;
+  outline: none;
 }
 
 .select:after {
-    content: "▼";
-    position: absolute;
-    left: 0;
-    top: 5px;
-    z-index: 1;
-    text-align: center;
-    width: 10%;
-    height: 100%;
-    cursor: pointer;
-    pointer-events: none;
-    font-size: 13px;
+  content: "▼";
+  position: absolute;
+  left: 0;
+  top: 5px;
+  z-index: 1;
+  text-align: center;
+  width: 10%;
+  height: 100%;
+  cursor: pointer;
+  pointer-events: none;
+  font-size: 13px;
 }
 
 .turn-button {
-    height: 96%;
-    font-family: 'Anton', sans-serif;
-    cursor: pointer;
-    background-color: var(--gui-main-color);
-    box-shadow: 0 0px 1px rgba(0, 0, 0, 0.363);
-    border-radius: 8px;
-    text-align: left;
-    padding: 0 20% 0 20%;
+  height: 96%;
+  font-family: "Anton", sans-serif;
+  cursor: pointer;
+  background-color: var(--gui-main-color);
+  box-shadow: 0 0px 1px rgba(0, 0, 0, 0.363);
+  border-radius: 8px;
+  text-align: left;
+  padding: 0 20% 0 20%;
 }
 
 .turn-button-is-active {
-    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.329);
-    border-bottom: 3px solid var(--main-green);
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.329);
+  border-bottom: 3px solid var(--main-green);
 }
 
 .turn-button:active {
-    box-shadow: 0 0px 1px rgba(0, 0, 0, 0.363);
+  box-shadow: 0 0px 1px rgba(0, 0, 0, 0.363);
 }
 
 .x-turn-button {
-    grid-area: x-turn-button;
+  grid-area: x-turn-button;
 }
 
 .o-turn-button {
-    grid-area: y-turn-button;
+  grid-area: y-turn-button;
 }
 
 .score-number {
-    float: right;
-    color: var(--grey-text);
+  float: right;
+  color: var(--grey-text);
 }
 
 .info-text {
-    grid-area: info-text;
-    color: var(--grey-text);
-    font-weight: normal;
+  grid-area: info-text;
+  color: var(--grey-text);
+  font-weight: normal;
 }
 
-
-
 .restart-button {
-    color: var(--main-green);
-    width: 100%;
-    border: none;
-    border-radius: 0% 0% 10px 10px;
-    box-shadow: 0 2px 3px rgba(0, 0, 0, .16);
+  color: var(--main-green);
+  width: 100%;
+  border: none;
+  border-radius: 0% 0% 10px 10px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.16);
 }
 
 .button {
-    font-family: 'Anton', sans-serif;
-    cursor: pointer;
-    background-color: var(--gui-main-color);
+  font-family: "Anton", sans-serif;
+  cursor: pointer;
+  background-color: var(--gui-main-color);
 }
 
 .button:focus {
-    outline: 0;
+  outline: 0;
 }
 
 .button:active {
-    outline: 0;
-    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.329) !important;
+  outline: 0;
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.329) !important;
 }
 
 .tic-tac-toe-bottom {
-    width: 100%;
-    height: 100%;
-    display: grid;
-    justify-items: center;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  justify-items: center;
 }
 
 .tic-tac-toe-board {
-    height: 100%;
-    width: 100%;
-    display: grid;
-    justify-items: center;
-    align-items: center;
-    background-color: var(--main-green);
+  height: 100%;
+  width: 100%;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  background-color: var(--main-green);
 }
 
 #tic-tac-toe-cells-container {
-    background-color: var(--dark-green);
-    width: 63.5vh;
-    height: 63.5vh;
-    display: grid;
-    grid-template-columns: repeat(3, 20vh);
-    grid-template-rows: repeat(3, 20vh);
-    grid-gap: 1.8vh;
+  background-color: var(--dark-green);
+  width: 63.5vh;
+  height: 63.5vh;
+  display: grid;
+  grid-template-columns: repeat(3, 20vh);
+  grid-template-rows: repeat(3, 20vh);
+  grid-gap: 1.8vh;
 }
 
 .tic-tac-toe-cell {
-    position: relative;
-    background-color: var(--main-green);
-    display: inline-grid;
-    justify-items: center;
-    align-items: center;
+  position: relative;
+  background-color: var(--main-green);
+  display: inline-grid;
+  justify-items: center;
+  align-items: center;
 }
 
 .tic-tac-toe-x {
-    position: relative;
-    display: inline-block;
-    width: 60%;
-    height: 60%;
+  position: relative;
+  display: inline-block;
+  width: 60%;
+  height: 60%;
 }
 
 .tic-tac-toe-x::before {
-    position: absolute;
-    top: 0%;
-    left: 8%;
-    height: 16%;
-    content: "";
-    background-color: var(--x-color);
-    vertical-align: baseline;
-    transform: rotate(45deg);
-    transform-origin: top left;
-    animation: x-line-animation 0.1s ease-in;
-    animation-fill-mode: forwards;
+  position: absolute;
+  top: 0%;
+  left: 8%;
+  height: 16%;
+  content: "";
+  background-color: var(--x-color);
+  vertical-align: baseline;
+  transform: rotate(45deg);
+  transform-origin: top left;
+  animation: x-line-animation 0.1s ease-in;
+  animation-fill-mode: forwards;
 }
 
 .tic-tac-toe-x::after {
-    position: absolute;
-    top: 0%;
-    right: 8%;
-    height: 16%;
-    content: "";
-    background-color: var(--x-color);
-    transform: rotate(-45deg);
-    transform-origin: top right;
-    animation: x-line-animation 0.1s ease-in;
-    animation-fill-mode: forwards;
+  position: absolute;
+  top: 0%;
+  right: 8%;
+  height: 16%;
+  content: "";
+  background-color: var(--x-color);
+  transform: rotate(-45deg);
+  transform-origin: top right;
+  animation: x-line-animation 0.1s ease-in;
+  animation-fill-mode: forwards;
 }
 
 @keyframes x-line-animation {
-    from {
-        width: 0%;
-    }
+  from {
+    width: 0%;
+  }
 
-    to {
-        width: 135%;
-    }
+  to {
+    width: 135%;
+  }
 }
 
 .tic-tac-toe-o {
-    position: relative;
-    z-index: 1;
-    width: 50%;
-    height: 50%;
-    border: 1.8vh solid;
-    border-radius: 50%;
-    transform: rotate(-45deg);
-    animation: o-line-animation 0.3s ease-in;
-    animation-fill-mode: forwards;
+  position: relative;
+  z-index: 1;
+  width: 50%;
+  height: 50%;
+  border: 1.8vh solid;
+  border-radius: 50%;
+  transform: rotate(-45deg);
+  animation: o-line-animation 0.3s ease-in;
+  animation-fill-mode: forwards;
 }
 
 @keyframes o-line-animation {
-    0% {
-        border-color: transparent;
-    }
+  0% {
+    border-color: transparent;
+  }
 
-    25% {
-        border-color: var(--o-color) transparent transparent transparent;
-    }
+  25% {
+    border-color: var(--o-color) transparent transparent transparent;
+  }
 
-    50% {
-        border-color: var(--o-color) transparent transparent var(--o-color);
-    }
+  50% {
+    border-color: var(--o-color) transparent transparent var(--o-color);
+  }
 
-    75% {
-        border-color: var(--o-color) transparent var(--o-color) var(--o-color);
-    }
+  75% {
+    border-color: var(--o-color) transparent var(--o-color) var(--o-color);
+  }
 
-    100% {
-        border-color: var(--o-color);
-    }
+  100% {
+    border-color: var(--o-color);
+  }
 }
 
 .vertical-black-line::after {
-    z-index: 1;
-    position: absolute;
-    top: 0px;
-    content: "";
-    width: 10%;
-    background-color: var(--x-color);
-    transform-origin: top;
-    animation: vertical-line-animation 0.1s ease-in;
-    animation-fill-mode: forwards;
+  z-index: 1;
+  position: absolute;
+  top: 0px;
+  content: "";
+  width: 10%;
+  background-color: var(--x-color);
+  transform-origin: top;
+  animation: vertical-line-animation 0.1s ease-in;
+  animation-fill-mode: forwards;
 }
 
 .vertical-white-line::after {
-    z-index: 1;
-    position: absolute;
-    top: 0px;
-    content: "";
-    width: 10%;
-    background-color: var(--o-color);
-    transform-origin: top;
-    animation: vertical-line-animation 0.1s ease-in;
-    animation-fill-mode: forwards;
+  z-index: 1;
+  position: absolute;
+  top: 0px;
+  content: "";
+  width: 10%;
+  background-color: var(--o-color);
+  transform-origin: top;
+  animation: vertical-line-animation 0.1s ease-in;
+  animation-fill-mode: forwards;
 }
 
 @keyframes vertical-line-animation {
-    from {
-        height: 0%;
-    }
+  from {
+    height: 0%;
+  }
 
-    to {
-        height: 320%;
-    }
+  to {
+    height: 320%;
+  }
 }
 
 .horizontal-black-line::after {
-    z-index: 1;
-    position: absolute;
-    left: 0px;
-    content: "";
-    height: 10%;
-    background-color: var(--x-color);
-    transform-origin: left;
-    animation: horizontal-line-animation 0.1s ease-in;
-    animation-fill-mode: forwards;
+  z-index: 1;
+  position: absolute;
+  left: 0px;
+  content: "";
+  height: 10%;
+  background-color: var(--x-color);
+  transform-origin: left;
+  animation: horizontal-line-animation 0.1s ease-in;
+  animation-fill-mode: forwards;
 }
 
 .horizontal-white-line::after {
-    z-index: 1;
-    position: absolute;
-    left: 0px;
-    content: "";
-    height: 10%;
-    background-color: var(--o-color);
-    transform-origin: left;
-    animation: horizontal-line-animation 0.1s ease-in;
-    animation-fill-mode: forwards;
+  z-index: 1;
+  position: absolute;
+  left: 0px;
+  content: "";
+  height: 10%;
+  background-color: var(--o-color);
+  transform-origin: left;
+  animation: horizontal-line-animation 0.1s ease-in;
+  animation-fill-mode: forwards;
 }
 
 @keyframes horizontal-line-animation {
-    from {
-        width: 0%;
-    }
+  from {
+    width: 0%;
+  }
 
-    to {
-        width: 320%;
-    }
+  to {
+    width: 320%;
+  }
 }
 
 .diagonal-backward-black-line::after {
-    z-index: 1;
-    position: absolute;
-    top: 0%;
-    left: 5%;
-    content: "";
-    height: 10%;
-    background-color: var(--x-color);
-    transform: rotate(45deg);
-    transform-origin: top left;
-    animation: diagonal-line-animation 0.1s ease-in;
-    animation-fill-mode: forwards;
+  z-index: 1;
+  position: absolute;
+  top: 0%;
+  left: 5%;
+  content: "";
+  height: 10%;
+  background-color: var(--x-color);
+  transform: rotate(45deg);
+  transform-origin: top left;
+  animation: diagonal-line-animation 0.1s ease-in;
+  animation-fill-mode: forwards;
 }
 
 .diagonal-backward-white-line::after {
-    z-index: 1;
-    position: absolute;
-    top: 0%;
-    left: 5%;
-    content: "";
-    height: 10%;
-    background-color: var(--o-color);
-    transform: rotate(45deg);
-    transform-origin: top left;
-    animation: diagonal-line-animation 0.1s ease-in;
-    animation-fill-mode: forwards;
+  z-index: 1;
+  position: absolute;
+  top: 0%;
+  left: 5%;
+  content: "";
+  height: 10%;
+  background-color: var(--o-color);
+  transform: rotate(45deg);
+  transform-origin: top left;
+  animation: diagonal-line-animation 0.1s ease-in;
+  animation-fill-mode: forwards;
 }
 
 .diagonal-forward-black-line::after {
-    z-index: 1;
-    position: absolute;
-    top: 0%;
-    right: 5%;
-    content: "";
-    height: 10%;
-    background-color: var(--x-color);
-    transform: rotate(-45deg);
-    transform-origin: top right;
-    animation: diagonal-line-animation 0.1s ease-in;
-    animation-fill-mode: forwards;
+  z-index: 1;
+  position: absolute;
+  top: 0%;
+  right: 5%;
+  content: "";
+  height: 10%;
+  background-color: var(--x-color);
+  transform: rotate(-45deg);
+  transform-origin: top right;
+  animation: diagonal-line-animation 0.1s ease-in;
+  animation-fill-mode: forwards;
 }
 
 .diagonal-forward-white-line::after {
-    z-index: 1;
-    position: absolute;
-    top: 0%;
-    right: 5%;
-    content: "";
-    height: 10%;
-    background-color: var(--o-color);
-    transform: rotate(-45deg);
-    transform-origin: top right;
-    animation: diagonal-line-animation 0.1s ease-in;
-    animation-fill-mode: forwards;
+  z-index: 1;
+  position: absolute;
+  top: 0%;
+  right: 5%;
+  content: "";
+  height: 10%;
+  background-color: var(--o-color);
+  transform: rotate(-45deg);
+  transform-origin: top right;
+  animation: diagonal-line-animation 0.1s ease-in;
+  animation-fill-mode: forwards;
 }
 
 @keyframes diagonal-line-animation {
-    from {
-        width: 0%;
-    }
+  from {
+    width: 0%;
+  }
 
-    to {
-        width: 440%;
-    }
+  to {
+    width: 440%;
+  }
 }
 
 #victory-container {
-    justify-items: center;
-    width: 63.6vh;
-    height: 63.6vh;
-    display: grid;
-    grid-template-rows: 80% 20%;
-    cursor: pointer;
+  justify-items: center;
+  width: 63.6vh;
+  height: 63.6vh;
+  display: grid;
+  grid-template-rows: 80% 20%;
+  cursor: pointer;
 }
 
 #big-ox-container {
-    position: relative;
-    display: inline-grid;
-    justify-items: center;
-    align-items: center;
-    width: 80%;
+  position: relative;
+  display: inline-grid;
+  justify-items: center;
+  align-items: center;
+  width: 80%;
 }
 
 .tie-container {
-    cursor: pointer;
-    justify-items: center;
-    align-items: center;
-    width: 63.6vh;
-    height: 63.6vh;
-    display: grid;
-    grid-template-rows: auto 50% 20% auto;
-    grid-template-columns: 50% 50%;
-    grid-template-areas: '. .''x o''text text''. .';
+  cursor: pointer;
+  justify-items: center;
+  align-items: center;
+  width: 63.6vh;
+  height: 63.6vh;
+  display: grid;
+  grid-template-rows: auto 50% 20% auto;
+  grid-template-columns: 50% 50%;
+  grid-template-areas: ". ." "x o" "text text" ". .";
 }
 
 .area-x {
-    grid-area: x;
+  grid-area: x;
 }
 
 .area-o {
-    grid-area: o;
+  grid-area: o;
 }
 
 .area-text {
-    grid-area: text;
+  grid-area: text;
 }
 
 .match-end-text {
-    display: inline-grid;
-    font-weight: bold;
-    color: var(--x-color);
-    font-size: 9vh;
-    letter-spacing: 1vh;
+  display: inline-grid;
+  font-weight: bold;
+  color: var(--x-color);
+  font-size: 9vh;
+  letter-spacing: 1vh;
 }
 
 .border-thiccccc-solid {
-    border: 5vh solid;
+  border: 5vh solid;
 }
 
 .border-thiccc-solid {
-    border: 3vh solid;
+  border: 3vh solid;
 }

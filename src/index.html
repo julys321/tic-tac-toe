@@ -1,40 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Tic Tac Toe</title>
-    <link href="https://fonts.googleapis.com/css?family=Anton" rel="stylesheet">
-    <link rel="stylesheet" href="index.css">
-</head>
+    <link
+      href="https://fonts.googleapis.com/css?family=Anton"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="index.css" />
+    <script type="module" src="./index.js" defer></script>
+  </head>
 
-<body>
-    <script type="module" src='./index.js'></script>
+  <body>
     <div id="tic-tac-toe" class="tic-tac-toe">
-        <div id="tic-tac-toe-top" class="tic-tac-toe-top">
-            <div id="select-container" class="select difficulty">
-                <select id="select-difficulty" class="select-dificulty">
-                    <option id="difficulty-play-with-friend" value="two-players">Zaiskite su draugu</option>
-                    <option id="difficulty-easy" value="easy">Lengvas</option>
-                    <option id="difficulty-medium" value="medium">Vidutinis</option>
-                    <option id="difficulty-immposible" value="immposible" disabled>Neimanomas</option>
-                </select>
-            </div>
-            <a id="x-turn-button" class="turn-button x-turn-button turn-button-is-clickable">X<div
-                    id="x-score" class="x-score score-number">0</div>
-            </a>
-            <a id="o-turn-button" class="turn-button o-turn-button turn-button-is-clickable">O<div id="o-score"
-                    class="o-score score-number">0</div>
-            </a>
-            <div id="tic-tac-toe-information-text" class="info-text"></div>
+      <div id="tic-tac-toe-top" class="tic-tac-toe-top">
+        <div id="select-container" class="select difficulty">
+          <select id="select-difficulty" class="select-dificulty">
+            <option id="difficulty-play-with-friend" value="two-players"
+              >Zaiskite su draugu</option
+            >
+            <option id="difficulty-easy" value="easy">Lengvas</option>
+            <option id="difficulty-medium" value="medium">Vidutinis</option>
+            <option id="difficulty-minimax" value="minimax">MiniMax</option>
+            <option id="difficulty-immposible" value="immposible" disabled
+              >Neimanomas</option
+            >
+          </select>
         </div>
-        <div id="tic-tac-toe-board" class="tic-tac-toe-board"></div>
-        <div id="tic-tac-toe-bottom" class="tic-tac-toe-bottom">
-            <input id="restart-button" class="button restart-button" type="button" value="IS NAUJO PALEISTI ZAIDIMA" />
-        </div>
+        <a
+          id="x-turn-button"
+          class="turn-button x-turn-button turn-button-is-clickable"
+          >X
+          <div id="x-score" class="x-score score-number">0</div>
+        </a>
+        <a
+          id="o-turn-button"
+          class="turn-button o-turn-button turn-button-is-clickable"
+          >O
+          <div id="o-score" class="o-score score-number">0</div>
+        </a>
+        <div id="tic-tac-toe-information-text" class="info-text"></div>
+      </div>
+      <div id="tic-tac-toe-board" class="tic-tac-toe-board"></div>
+      <div id="tic-tac-toe-bottom" class="tic-tac-toe-bottom">
+        <input
+          id="restart-button"
+          class="button restart-button"
+          type="button"
+          value="IS NAUJO PALEISTI ZAIDIMA"
+        />
+      </div>
     </div>
-</body>
-
+  </body>
 </html>
