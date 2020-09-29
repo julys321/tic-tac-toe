@@ -15,8 +15,5 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/julys321/tic-tac-toe"
-  },
-  "engines": {
-    "node": "10.x"
   }
 }
